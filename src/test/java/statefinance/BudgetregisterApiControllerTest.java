@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @Ignore
 @RunWith(SpringRunner.class)
-@WebMvcTest(BudgetregisterApiController.class)
 @Import(TestConfiguration.class)
 public class BudgetregisterApiControllerTest {
 

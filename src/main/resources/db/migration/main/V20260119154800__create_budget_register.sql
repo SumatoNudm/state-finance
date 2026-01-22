@@ -8,8 +8,8 @@ CREATE TABLE budget_register(
     budgetregisternumber VARCHAR(100) NOT NULL,
     budgetregistername VARCHAR(100) NOT NULL,
 
-    startingdate VARCHAR(50) NOT NULL,
-    endingdate VARCHAR(50) NOT NULL,
+    startingdate TIMESTAMP WITHOUT TIME ZONE,
+    endingdate TIMESTAMP WITHOUT TIME ZONE,
 
 --    endingdate TIMESTAMP WITHOUT TIME ZONE,
 

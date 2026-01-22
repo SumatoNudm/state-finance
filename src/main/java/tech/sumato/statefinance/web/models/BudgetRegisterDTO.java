@@ -1,5 +1,6 @@
 package tech.sumato.statefinance.web.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import tech.sumato.statefinance.web.entity.BudgetRegister;
@@ -20,9 +21,11 @@ public class BudgetRegisterDTO {
 
     private String budgetRegisterName;
 
-    private String startingDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date startingDate;
 
-    private String endingDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date endingDate;
 
     private String currentFy;
 

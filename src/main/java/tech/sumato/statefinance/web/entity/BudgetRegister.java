@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 import java.util.Locale;
 
@@ -49,11 +50,13 @@ public class BudgetRegister implements Serializable {
 
     @NotNull
     @Column(name = "startingdate")
-    private String startingDate;
+    @Temporal(TemporalType.DATE)
+    private Date startingDate;
 
     @NotNull
     @Column(name = "endingdate")
-    private String endingDate;
+    @Temporal(TemporalType.DATE)
+    private Date endingDate;
 
     @NotNull
     @Column(name = "currentfy")
@@ -68,13 +71,15 @@ public class BudgetRegister implements Serializable {
 
 //        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+
+
         BudgetRegisterDTO budgetRegisterDTO = new BudgetRegisterDTO();
         budgetRegisterDTO.setId(id);
         budgetRegisterDTO.setTenantId(tenantId);
         budgetRegisterDTO.setBudgetRegisterId(budgetRegisterId);
         budgetRegisterDTO.setBudgetRegisterNumber(budgetRegisterNumber);
         budgetRegisterDTO.setBudgetRegisterName(budgetRegisterName);
-        budgetRegisterDTO.setStartingDate( startingDate);
+        budgetRegisterDTO.setStartingDate(startingDate);
         budgetRegisterDTO.setEndingDate(endingDate);
         budgetRegisterDTO.setCurrentFy(currentFy);
         budgetRegisterDTO.setNextFy(nextFy);
