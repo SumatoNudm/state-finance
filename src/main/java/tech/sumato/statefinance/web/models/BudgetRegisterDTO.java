@@ -17,14 +17,16 @@ public class BudgetRegisterDTO {
 
     private String tenantId;
 
+    private String cityName;
+
     private String budgetRegisterNumber;
 
     private String budgetRegisterName;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date startingDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date endingDate;
 
     private String currentFy;
@@ -35,6 +37,7 @@ public class BudgetRegisterDTO {
         BudgetRegister budgetRegister = new BudgetRegister();
         budgetRegister.setBudgetRegisterId(budgetRegisterId);
         budgetRegister.setTenantId(tenantId);
+        budgetRegister.setCityName(cityName);
         budgetRegister.setBudgetRegisterName(budgetRegisterName);
         budgetRegister.setBudgetRegisterNumber(budgetRegisterNumber);
         budgetRegister.setStartingDate(startingDate);

@@ -33,8 +33,8 @@ public class StateFinanceService {
 
     }
 
-    public void saveBudgetRegister(BudgetRegister budgetRegister) {
-        stateFinanceRepository.save(budgetRegister);
+    public BudgetRegister saveBudgetRegister(BudgetRegister budgetRegister) {
+        return stateFinanceRepository.save(budgetRegister);
     }
 
     public List<BudgetRegisterDTO> findAllBudgets() {

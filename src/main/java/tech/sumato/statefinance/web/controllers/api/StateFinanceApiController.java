@@ -48,18 +48,32 @@ public class StateFinanceApiController {
 
         BudgetRegister budgetRegister = stateFinanceService.findBudgetRegisterByTenantAndBudgetRegisterId(budgetRegisterDTO.getTenantId(), budgetRegisterDTO.getBudgetRegisterId());
 
+
+
         if (null != budgetRegister) {
-            response.put("error", "Budget register already exists!");
-            response.put("message", "Budget register already exists!");
-            response.put("status", "success");
-            response.put("body", requestBody);
+
+            ResponseInfo responseInfo = ResponseInfo.builder()
+                    .status(String.valueOf(HttpStatus.CONFLICT.value()))
+                    .build();
+
+            response.put("ResponseInfo", responseInfo);
+            Map<String, String> errorRes = new HashMap<>();
+            errorRes.put("message", "Budget Register already exists!");
+            response.put("data", errorRes);
+
             return response;
         }
 
-        stateFinanceService.saveBudgetRegister(budgetRegisterDTO.mapToEntity());
+        BudgetRegister savedBudgetRegister =  stateFinanceService.saveBudgetRegister(budgetRegisterDTO.mapToEntity());
 
-        response.put("message", "Budget register saved successfully !");
-        response.put("status", "success");
+
+        ResponseInfo responseInfo = ResponseInfo.builder()
+                .status(String.valueOf(HttpStatus.OK.value()))
+                .build();
+
+        response.put("ResponseInfo", responseInfo);
+        response.put("data", savedBudgetRegister);
+
 
 
         return response;
