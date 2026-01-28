@@ -197,6 +197,25 @@
             <artifactId>jsoup</artifactId>
         </dependency>
 
+        <!-- VIEWS RELATED END -->
+            <dependency>
+                <groupId>org.apache.tiles</groupId>
+                <artifactId>tiles-core</artifactId>
+                <version>${apache-tiles-version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-beanutils</groupId>
+                        <artifactId>commons-beanutils</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tiles</groupId>
+                <artifactId>tiles-jsp</artifactId>
+                <version>${apache-tiles-version}</version>
+            </dependency>
+            <!-- VIEWS RELATED END -->
+
     </dependencies>
 
     <repositories>

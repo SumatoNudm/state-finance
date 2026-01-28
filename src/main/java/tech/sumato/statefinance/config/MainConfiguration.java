@@ -38,14 +38,4 @@ public class MainConfiguration {
     converter.setObjectMapper(objectMapper);
     return converter;
     }
-
-
-    @Bean
-    public InternalResourceViewResolver jspViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/views/");
-        resolver.setSuffix(".jsp");
-        return resolver;
-    }
-
 }
