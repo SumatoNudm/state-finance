@@ -15,10 +15,16 @@ import tech.sumato.statefinance.web.service.StateFinanceService;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @RequestMapping("/views")
 public class StateFinanceController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(StateFinanceController.class);
+
+    private static final String BUDGET_REGISTER_VIEW = "budgetregisters-datatable";
 
     @Autowired
     private StateFinanceService stateFinanceService;
@@ -27,10 +33,8 @@ public class StateFinanceController {
     public String budgetsPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            Model model
-    ) {
-        Page<BudgetRegisterDTO> budgetPage =
-                stateFinanceService.findBudgets(PageRequest.of(page, size));
+            Model model) {
+        Page<BudgetRegisterDTO> budgetPage = stateFinanceService.findBudgets(PageRequest.of(page, size));
 
         model.addAttribute("budgets", budgetPage.getContent());
         model.addAttribute("currentPage", page);
@@ -45,19 +49,40 @@ public class StateFinanceController {
         return "budgets/budgetregisters-paginated"; // resolves to budgets.jsp
     }
 
+    // @GetMapping(value = "/budgets/datatables", produces =
+    // MediaType.APPLICATION_JSON_VALUE)
+    // @ResponseBody
+    // public Map<String, Object> showBudgetsDataTable(
+    // @RequestParam int draw,
+    // @RequestParam int start,
+    // @RequestParam int length) {
 
-    @GetMapping(value = "/budgets/datatables", produces = MediaType.APPLICATION_JSON_VALUE)
+    // int page = start / length;
+
+    // Page<BudgetRegisterDTO> budgetPage =
+    // stateFinanceService.findBudgets(PageRequest.of(page, length));
+
+    // Map<String, Object> response = new HashMap<>();
+    // response.put("draw", draw);
+    // response.put("recordsTotal", budgetPage.getTotalElements());
+    // response.put("recordsFiltered", budgetPage.getTotalElements());
+    // response.put("data", budgetPage.getContent());
+
+    // return response;
+    // }
+
+    @GetMapping("/budgets/data")
     @ResponseBody
-    public Map<String, Object> showBudgetsDataTable(
+    public Map<String, Object> budgetsDatatable(
             @RequestParam int draw,
             @RequestParam int start,
-            @RequestParam int length
-    ) {
+            @RequestParam int length,
+            @RequestParam(name = "search[value]", required = false) String search) {
 
         int page = start / length;
+        int size = length;
 
-        Page<BudgetRegisterDTO> budgetPage =
-                stateFinanceService.findBudgets(PageRequest.of(page, length));
+        Page<BudgetRegisterDTO> budgetPage = stateFinanceService.findBudget(search, PageRequest.of(page, size));
 
         Map<String, Object> response = new HashMap<>();
         response.put("draw", draw);
@@ -68,6 +93,12 @@ public class StateFinanceController {
         return response;
     }
 
+    @GetMapping("/budget")
+    public String view() {
 
+        LOG.info("hello");
+       return BUDGET_REGISTER_VIEW;
+//return "budgets/budgetregisters-datatable";
+    }
 
 }

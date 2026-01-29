@@ -55,13 +55,11 @@ public class BudgetRegister implements Serializable {
     @NotNull
     @Column(name = "startingdate")
     @Temporal(TemporalType.DATE)
-    @DateFormat
     private Date startingDate;
 
     @NotNull
     @Column(name = "endingdate")
     @Temporal(TemporalType.DATE)
-    @DateFormat
     private Date endingDate;
 
     @NotNull

@@ -1,6 +1,5 @@
 package tech.sumato.statefinance.web.service;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +18,13 @@ public class StateFinanceService {
 
     private static final Logger LOG = LoggerFactory.getLogger(StateFinanceService.class);
 
-
     @Autowired
     private StateFinanceRepository stateFinanceRepository;
 
-
     public BudgetRegister findBudgetRegisterByTenantAndBudgetRegisterId(String tenantId, Long budgetRegisterId) {
 
-        BudgetRegister budgetRegister = stateFinanceRepository.findByTenantIdAndBudgetRegisterId(tenantId, budgetRegisterId);
-
+        BudgetRegister budgetRegister = stateFinanceRepository.findByTenantIdAndBudgetRegisterId(tenantId,
+                budgetRegisterId);
 
         return budgetRegister;
 
@@ -38,13 +35,27 @@ public class StateFinanceService {
     }
 
     public List<BudgetRegisterDTO> findAllBudgets() {
-       List<BudgetRegisterDTO> budgetRegisterDTOS =   stateFinanceRepository.findAll().stream().map(BudgetRegister::toDTO).collect(Collectors.toList());
+        List<BudgetRegisterDTO> budgetRegisterDTOS = stateFinanceRepository.findAll().stream()
+                .map(BudgetRegister::toDTO).collect(Collectors.toList());
         return budgetRegisterDTOS;
     }
 
     public Page<BudgetRegisterDTO> findBudgets(Pageable pageable) {
         return stateFinanceRepository
                 .findAll(pageable)
+                .map(BudgetRegister::toDTO);
+    }
+
+    public Page<BudgetRegisterDTO> findBudget(String search, Pageable pageable) {
+
+        if (search == null || search.trim().isEmpty()) {
+            return stateFinanceRepository
+                    .findAll(pageable)
+                    .map(BudgetRegister::toDTO);
+        }
+
+        return stateFinanceRepository
+                .searchBudgets(search.toLowerCase(), pageable)
                 .map(BudgetRegister::toDTO);
     }
 
