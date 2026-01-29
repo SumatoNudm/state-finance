@@ -15,6 +15,7 @@
         <jsoup-version>1.10.3</jsoup-version>
         <joda-time-version>2.9.9</joda-time-version>
         <joda-time-jsptag-version>1.1.1</joda-time-jsptag-version>
+        <apache-tiles-version>3.0.7</apache-tiles-version>
     </properties>
     <parent>
         <groupId>org.springframework.boot</groupId>
