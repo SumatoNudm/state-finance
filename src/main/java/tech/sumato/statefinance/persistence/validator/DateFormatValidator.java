@@ -71,7 +71,7 @@ public class DateFormatValidator implements ConstraintValidator<DateFormat, Date
     @Override
     public boolean isValid(final Date date, final ConstraintValidatorContext context) {
         return date == null || Pattern.compile(Constants.DATEFORMAT)
-                .matcher(DateUtils.getFormattedDate(date, "dd/MM/yyyy")).matches();
+                .matcher(DateUtils.getFormattedDate(date, "yyyy-MM-dd")).matches();
     }
 
 }

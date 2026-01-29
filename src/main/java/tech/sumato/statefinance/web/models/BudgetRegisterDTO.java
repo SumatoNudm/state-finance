@@ -3,6 +3,7 @@ package tech.sumato.statefinance.web.models;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
+import tech.sumato.statefinance.utils.DateUtils;
 import tech.sumato.statefinance.web.entity.BudgetRegister;
 
 import java.util.Date;
@@ -23,10 +24,10 @@ public class BudgetRegisterDTO {
 
     private String budgetRegisterName;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startingDate;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endingDate;
 
     private String currentFy;
@@ -46,4 +47,14 @@ public class BudgetRegisterDTO {
         budgetRegister.setNextFy(nextFy);
         return budgetRegister;
     }
+
+
+    public String formatedStartingDate() {
+        return DateUtils.getFormattedDate(startingDate, "dd/MM/yyyy");
+    }
+
+    public String formatedEndingDate() {
+        return DateUtils.getFormattedDate(endingDate, "dd/MM/yyyy");
+    }
+
 }
