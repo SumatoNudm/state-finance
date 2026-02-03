@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.egov</groupId>
     <artifactId>state-finance</artifactId>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>state-finance</name>
     <version>1.0.0</version>
     <properties>
