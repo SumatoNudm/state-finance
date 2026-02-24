@@ -227,7 +227,7 @@
         <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
     </listener>
     <!-- Listeners Ends Servlet Declaration Starts -->
-    <servlet>
+    <!-- <servlet>
         <servlet-name>statefinance</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
@@ -255,7 +255,7 @@
     <servlet-mapping>
         <servlet-name>reportViewer</servlet-name>
         <url-pattern>/reportViewer</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> -->
     <session-config>
         <cookie-config>
             <path>/</path>

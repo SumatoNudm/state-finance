@@ -11,10 +11,11 @@
         <put-attribute name="body" value=""/>
     </definition>
 
-
     <definition name="budgetregisters-datatable" extends="base_layout">
-        <put-attribute name="title" value="Budget Register View" cascade="true" />
-        <put-attribute name="body" value="/WEB-INF/views/budgets/budgetregisters-datatable.jsp"/>
+        <put-attribute name="page-title" value="Budget Register View"
+                       cascade="true"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/views/budgets/budgetregisters-datatable.jsp"/>
     </definition>
 
 </tiles-definitions>

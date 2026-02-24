@@ -97,7 +97,7 @@ public class StateFinanceController {
     public String view() {
 
         LOG.info("hello");
-       return BUDGET_REGISTER_VIEW;
+      return BUDGET_REGISTER_VIEW;
 //return "budgets/budgetregisters-datatable";
     }
 
