@@ -23,10 +23,10 @@ public class BudgetRegisterDTO {
 
     private String budgetRegisterName;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startingDate;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endingDate;
 
     private String currentFy;

@@ -10,7 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import tech.sumato.statefinance.web.entity.BudgetRegister;
 import tech.sumato.statefinance.web.models.BudgetRegisterDTO;
 import tech.sumato.statefinance.web.models.GenericRequest;
@@ -36,7 +38,7 @@ public class StateFinanceApiController {
     @PostMapping(value = "/budgets/submit",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Map<String, Object> postForApproval(
+    public ResponseEntity<Map<String, Object>> postForApproval(
             @RequestBody @Valid GenericRequest<BudgetRegisterDTO> requestBody) {
 
 
@@ -45,23 +47,17 @@ public class StateFinanceApiController {
 
         BudgetRegisterDTO budgetRegisterDTO = requestBody.getData();
 
+        response.put("body", budgetRegisterDTO);
+
 
         BudgetRegister budgetRegister = stateFinanceService.findBudgetRegisterByTenantAndBudgetRegisterId(budgetRegisterDTO.getTenantId(), budgetRegisterDTO.getBudgetRegisterId());
 
-
-
         if (null != budgetRegister) {
-
-            ResponseInfo responseInfo = ResponseInfo.builder()
-                    .status(String.valueOf(HttpStatus.CONFLICT.value()))
-                    .build();
-
-            response.put("ResponseInfo", responseInfo);
-            Map<String, String> errorRes = new HashMap<>();
-            errorRes.put("message", "Budget Register already exists!");
-            response.put("data", errorRes);
-
-            return response;
+            response.put("ResponseInfo", ResponseInfo.builder().status(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value())).build());
+            response.put("Message", "Budget already exists !");
+            return ResponseEntity
+                    .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                    .body(response);
         }
 
         BudgetRegister savedBudgetRegister =  stateFinanceService.saveBudgetRegister(budgetRegisterDTO.mapToEntity());
@@ -72,11 +68,12 @@ public class StateFinanceApiController {
                 .build();
 
         response.put("ResponseInfo", responseInfo);
-        response.put("data", savedBudgetRegister);
+        response.put("Data", savedBudgetRegister);
 
 
-
-        return response;
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
 
     }
 
