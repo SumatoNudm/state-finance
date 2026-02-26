@@ -2,6 +2,8 @@ package tech.sumato.statefinance.web.controllers.api;
 
 
 import org.apache.http.auth.AuthenticationException;
+import org.apache.kafka.common.protocol.types.Field;
+import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.response.ResponseInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import tech.sumato.statefinance.utils.MicroserviceUtils;
 import tech.sumato.statefinance.web.entity.BudgetRegister;
-import tech.sumato.statefinance.web.models.BudgetRegisterDTO;
-import tech.sumato.statefinance.web.models.GenericRequest;
+import tech.sumato.statefinance.web.models.*;
 import tech.sumato.statefinance.web.service.StateFinanceService;
 
 import javax.validation.Valid;
@@ -32,6 +34,10 @@ public class StateFinanceApiController {
 
     @Autowired
     private StateFinanceService stateFinanceService;
+
+
+    @Autowired
+    private MicroserviceUtils microserviceUtils;
 
 
 
@@ -134,6 +140,72 @@ public class StateFinanceApiController {
 
         return response;
     }
+
+
+
+    @PostMapping(
+            value = "/budgets/handleaction",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public @ResponseBody Map<String, Object> handleAction(@RequestBody @Valid GenericRequest<StateActionDTO> requestBody) throws Exception {
+
+        Map<String, Object> response = new HashMap<>();
+
+        // check if provided budget register exists
+
+//        if (true) {
+//
+//            response.put("data", requestBody);
+//
+//            return response;
+//        }
+
+        BudgetRegister budgetRegister = stateFinanceService.findByTenantIdAndBudgetRegisterId(requestBody.getTenantId(), requestBody.getData().getBudgetRegisterId());
+
+        if (null == budgetRegister) {
+            response.put("message", "Provided budget register does not exists !");
+            response.put("ResponseInfo", ResponseInfo.builder().status(String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY)).build());
+            return response;
+        }
+
+        BudgetStateActionDTO budgetStateActionDTO = new BudgetStateActionDTO();
+
+        BudgetStateActionDTO.BudgetRegisterAction action = BudgetStateActionDTO.BudgetRegisterAction.REJECT;
+        if (requestBody.getData().getAction().equalsIgnoreCase("approve")) {
+            action = BudgetStateActionDTO.BudgetRegisterAction.APPROVE;
+        }
+
+        budgetStateActionDTO.action = action;
+        budgetStateActionDTO.budgetRegister = budgetRegister.toDTO();
+        budgetStateActionDTO.tenantId = budgetRegister.getTenantId();
+        budgetStateActionDTO.setRequestInfo(requestBody.getRequestInfo());
+
+
+        microserviceUtils.submitBudgetAction(budgetStateActionDTO, requestBody.getTenantId());
+
+
+        response.put("message", "Budget action handled successfully !");
+        response.put("ResponseInfo", ResponseInfo.builder().status(String.valueOf(HttpStatus.OK)).build());
+
+        return response;
+
+
+    }
+
+
+    @GetMapping(
+            value = "/budgets/test",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public @ResponseBody Map<String, Object> budgetTest() {
+        String fUrl = microserviceUtils.getFinanceHost("pg.gmc");
+        Map<String, Object> response = new HashMap<>();
+        response.put("url", fUrl);
+        return response;
+
+    }
+
 
 
 }

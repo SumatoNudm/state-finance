@@ -19,6 +19,9 @@ public class GenericRequest<T> {
     @JsonProperty("RequestInfo")
     private RequestInfo requestInfo;
 
+    @JsonProperty("tenantId")
+    private String tenantId;
+
     @JsonProperty("data")
     private T data;
 

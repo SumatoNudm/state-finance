@@ -2,19 +2,29 @@ package tech.sumato.statefinance.config;
 
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+
+import java.util.Collections;
 import java.util.TimeZone;
 import javax.annotation.PostConstruct;
     import com.fasterxml.jackson.databind.DeserializationFeature;
     import com.fasterxml.jackson.databind.ObjectMapper;
 import org.egov.tracer.config.TracerConfiguration;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import tech.sumato.statefinance.util.RestErrorHandler;
+import tech.sumato.statefinance.util.RestTemplateLoggerInterceptor;
 
 
+@Configuration
 @Import({TracerConfiguration.class})
 public class MainConfiguration {
 
@@ -46,6 +56,21 @@ public class MainConfiguration {
         resolver.setPrefix("/WEB-INF/views/");
         resolver.setSuffix(".jsp");
         return resolver;
+    }
+
+
+    @Bean
+    public RestTemplate restTemplate(){
+        System.out.println("************************* RestTemplate object created*********************");
+
+        SimpleClientHttpRequestFactory simpleCFactory = new  SimpleClientHttpRequestFactory();
+        simpleCFactory.setOutputStreaming(false);
+
+        ClientHttpRequestFactory factory = new BufferingClientHttpRequestFactory(simpleCFactory);
+        RestTemplate restTemplate = new RestTemplate(factory);
+        restTemplate.setInterceptors(Collections.singletonList(new RestTemplateLoggerInterceptor()));
+        restTemplate.setErrorHandler(new RestErrorHandler());
+        return restTemplate;
     }
 
 }

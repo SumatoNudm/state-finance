@@ -50,6 +50,12 @@ public class GenericRequestDeserializer
             request.setRequestInfo(requestInfo);
         }
 
+        JsonNode tenantNode = root.get("tenantId");
+        if (tenantNode != null && !tenantNode.isNull()) {
+            request.setTenantId(tenantNode.asText());
+        }
+
+
         // Deserialize generic Data
         JsonNode dataNode = root.get("data");
         if (dataNode != null && dataType != null) {

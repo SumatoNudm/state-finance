@@ -48,4 +48,9 @@ public class StateFinanceService {
                 .map(BudgetRegister::toDTO);
     }
 
+
+    public BudgetRegister findByTenantIdAndBudgetRegisterId(String tenantId, Long budgetRegisterId) {
+        return stateFinanceRepository.findByTenantIdAndBudgetRegisterId(tenantId, budgetRegisterId);
+    }
+
 }
